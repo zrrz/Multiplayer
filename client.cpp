@@ -23,11 +23,11 @@ int main(int argc, char **argv)
     struct addrinfo *result = NULL,
                     *ptr = NULL,
                     hints;
-    char *sendbuf = "this is a test";
+    char *sendbuf = "Hi I'm Zack";
     char recvbuf[DEFAULT_BUFLEN];
     int iResult;
     int recvbuflen = DEFAULT_BUFLEN;
-    char ipaddr[] = "127.0.0.1";
+    char ipaddr[] = "10.229.22.183";
 
 	char buffer[512]={0};
 
@@ -82,7 +82,7 @@ int main(int argc, char **argv)
         break;
     }
 
-   // freeaddrinfo(result);
+    // freeaddrinfo(result);
 
     if (ConnectSocket == INVALID_SOCKET) {
         printf("Unable to connect to server!\n");
@@ -90,14 +90,15 @@ int main(int argc, char **argv)
         return 1;
     }
 
-    // Send an initial buffer
-    iResult = send( ConnectSocket, sendbuf, (int)strlen(sendbuf), 0 );
-    if (iResult == SOCKET_ERROR) {
-        printf("send failed with error: %d\n", WSAGetLastError());
-        closesocket(ConnectSocket);
-        WSACleanup();
-        return 1;
-    }
+	// Send an initial buffer
+	iResult = send(ConnectSocket, sendbuf, (int)strlen(sendbuf) + 1, 0);
+	if (iResult == SOCKET_ERROR) {
+		printf("send failed with error: %d\n", WSAGetLastError());
+		closesocket(ConnectSocket);
+		WSACleanup();
+		return 1;
+	}
+
 	int rec = recv(ConnectSocket, buffer, 512, 0);
     printf("%s Bytes Sent: %ld\n", sendbuf, iResult);
 	printf("%d Recieved\n", rec);
@@ -116,8 +117,10 @@ int main(int argc, char **argv)
     do {
 
         iResult = recv(ConnectSocket, recvbuf, recvbuflen, 0);
-        if ( iResult > 0 )
-            printf("Bytes received: %d\n", iResult);
+		if (iResult > 0) {
+			printf("Bytes received: %d\n", iResult);
+			printf(recvbuf);
+		}
         else if ( iResult == 0 )
             printf("Connection closed\n");
         else
