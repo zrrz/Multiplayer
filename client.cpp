@@ -1,3 +1,5 @@
+#undef UNICODE
+
 #define WIN32_LEAN_AND_MEAN
 
 #include <windows.h>
@@ -19,14 +21,21 @@
 int main(int argc, char **argv) 
 {
     WSADATA wsaData;
+
+	int iResult;
+
     SOCKET ConnectSocket = INVALID_SOCKET;
+
     struct addrinfo *result = NULL,
                     *ptr = NULL,
                     hints;
+
     char *sendbuf = "Hi I'm Zack";
-    char recvbuf[DEFAULT_BUFLEN];
-    int iResult;
+
+	int iSendResult;
+    char recvbuf[DEFAULT_BUFLEN];   
     int recvbuflen = DEFAULT_BUFLEN;
+
     char ipaddr[] = "10.229.22.183";
 
 	char buffer[512]={0};
@@ -45,9 +54,10 @@ int main(int argc, char **argv)
     }
 
     ZeroMemory( &hints, sizeof(hints) );
-    hints.ai_family = AF_UNSPEC;
+	hints.ai_family = AF_INET; // May need to be AF_UNSPEC
     hints.ai_socktype = SOCK_STREAM;
     hints.ai_protocol = IPPROTO_TCP;
+	hints.ai_flags = AI_PASSIVE; // May break
 
     // Resolve the server address and port
     iResult = getaddrinfo(ipaddr, DEFAULT_PORT, &hints, &result);
