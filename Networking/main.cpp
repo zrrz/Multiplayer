@@ -1,7 +1,21 @@
+#undef UNICODE
+
+#define WIN32_LEAN_AND_MEAN
+
 #include <iostream>
 #include <process.h>
+
 #include <windows.h>
-//#include <winsock2.h>
+#include <winsock2.h>
+#include <ws2tcpip.h>
+#include <stdlib.h>
+#include <stdio.h>
+
+
+// need to link with ws2_32.lib, mswsock.lib, and advapi32.lib
+#pragma comment (lib, "ws2_32.lib")
+#pragma comment (lib, "mswsock.lib")
+#pragma comment (lib, "advapi32.lib")
 
 using namespace std;
 
@@ -30,16 +44,21 @@ int main() {
 
 	cout << "recv: " << msg << endl;
 
-	for (int i = 0; i < 10; i++) {
-		for (char l = 'a'; l <= 'z'; l++) {
-			cout << '\t' << l << endl;
-			Sleep(250);
-		}
-	}
+	//for (int i = 0; i < 10; i++) {
+	//	for (char l = 'a'; l <= 'z'; l++) {
+	//		cout << '\t' << l << endl;
+	//		Sleep(250);
+	//	}
+	//}
+
+	char ipaddr[] = "10.229.22.183";
+
+	SetupServer(DEFAULT_PORT);
+	SetupClient(DEFAULT_PORT, ipaddr);
 	return 0;
 }
 
-void SetupServer(char*) {
+void SetupServer(char* port) {
 
 }
 
