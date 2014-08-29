@@ -1,0 +1,3 @@
+#name x_offset y_offset w h numframes
+images/trap.png
+idle   0   0 32 32 1

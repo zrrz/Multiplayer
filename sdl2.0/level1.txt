@@ -1,0 +1,4 @@
+bg images/nebula0.jpg
+Player Link		link_anime.txt  0 0
+Enemy  trap		trap.txt		128 128
+Nextlevel level2.txt

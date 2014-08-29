@@ -1,0 +1,18 @@
+#name x_offset y_offset w h numframes
+images/link_sheet.png
+idle_l   0   0 32 32 1
+idle_r   0  32 32 32 1
+idle_u   0  64 32 32 1
+idle_d   0  96 32 32 1
+walk_l   0   0 32 32 6
+walk_r   0  32 32 32 6
+walk_u   0  64 32 32 8
+walk_d   0  96 32 32 8
+chop_d   0 128 32 32 6
+chop_l   0 160 32 32 5
+chop_r   0 192 32 32 5
+chop_u   0 224 32 32 5
+fire_l 192   0 32 32 3
+fire_r 192  32 32 32 3
+fire_u 224  64 32 32 3
+fire_d 256  96 32 32 3
