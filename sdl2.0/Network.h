@@ -33,6 +33,7 @@ public:
 	} mem;
 
 	int Init();
+	void Send(char* msg);
 	void RecvLoop();
 	void ConnectLoop();
 

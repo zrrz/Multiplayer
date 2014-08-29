@@ -20,7 +20,7 @@ Manager::Manager(void)
 
 Manager::~Manager(void)
 {
-
+	
 }
 
 int Manager::Init()

@@ -55,12 +55,12 @@ int Network::Init() {
 		}
 
 		mem.numConnect = 0;
-		HANDLE thread = (HANDLE)_beginthread(Static_ConnectLoop, 0, this);
+		HANDLE thread = (HANDLE)_beginthread(&Network::Static_ConnectLoop, 0, this);
 
 		int r = WSAGetLastError();
 
-		/*HANDLE thread = (HANDLE)*/_beginthread(Static_RecvLoop, 0, this);
-		do {
+		/*HANDLE thread = (HANDLE)*/_beginthread(&Network::Static_RecvLoop, 0, this);
+		/*do {
 			cout << "Out:   ";
 			cin.getline(recvbuf, 512);
 			for (int i = 0; i < mem.numConnect; i++)
@@ -70,7 +70,7 @@ int Network::Init() {
 
 			if (iResult == -1)
 				break;
-		} while (iResult != NULL);
+		} while (iResult != NULL);*/
 	} else {
 		WSADATA wsaData;
 
@@ -154,15 +154,23 @@ int Network::Init() {
 
 		//SDL_Thread* thread = SDL_CreateThread(Static_RecvLoop, "RecvLoop", (void*)&ConnectSocket);
 
-		HANDLE thread = (HANDLE)_beginthread(Static_RecvLoop, 0, this);
-		do {
+		HANDLE thread = (HANDLE)_beginthread(&Network::Static_RecvLoop, 0, this);
+	/*	do {
 			cout << "Out: ";
 			cin.getline(recvbuf, 512);
 			iResult = send(ConnectSocket, recvbuf, (int)strlen(recvbuf) + 1, 0);
-			//printf("%s \n", buffer);
+			printf("%s \n", buffer);
 			if (iResult == -1)
 				break;
-		} while (iResult != NULL);
+		} while (iResult != NULL);*/
+	}
+}
+
+void Network::Send(char* msg) {
+	int iResult;
+	for (int i = 0; i < mem.numConnect; i++)
+	{
+		iResult = send(mem.ClientSocket[i], msg, (int)strlen(msg) + 1, 0);
 	}
 }
 
