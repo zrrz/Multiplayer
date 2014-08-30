@@ -1,7 +1,11 @@
 #include "Network.h"
 #include "SDL_thread.h"
+#include "Manager.h"
+
+// Manager* Network::manager = NULL;
 
 int Network::Init() {
+	manager = Manager::instance;
 	if (isServer) {
 		//mem.numConnect = 1;
 		WSADATA wsaData;
@@ -178,9 +182,9 @@ void Network::RecvLoop() {
 	SOCKET* socket;// = (SOCKET*)param;
 	int in_msg;
 
-	if (isServer) {		
+	if (isServer) {
 		socket = mem.ClientSocket;
-		fd_set thing;
+		fd_set set;
 		timeval timeout;
 		timeout.tv_sec = 0;
 		timeout.tv_usec = 100;
@@ -189,9 +193,9 @@ void Network::RecvLoop() {
 
 		while (true) {
 			for (int i = 0; i < mem.numConnect; i++) {
-				FD_ZERO(&thing);
-				FD_SET(mem.ClientSocket[i], &thing);
-				result = select(0, &thing, NULL, NULL, &timeout);
+				FD_ZERO(&set);
+				FD_SET(mem.ClientSocket[i], &set);
+				result = select(0, &set, NULL, NULL, &timeout);
 
 				if (result > 0) {
 					in_msg = recv(mem.ClientSocket[i], inBuffer, 512, 0);
@@ -201,6 +205,10 @@ void Network::RecvLoop() {
 						break;
 
 					cout << "\In:    " << inBuffer << endl;
+
+					if (!HandleMessage(inBuffer))
+						break;
+
 					for (int i = 0; i < mem.numConnect; i++) {
 						if (i != temp)
 							send(mem.ClientSocket[i], inBuffer, (int)strlen(inBuffer) + 1, 0);
@@ -219,7 +227,8 @@ void Network::RecvLoop() {
 			if (!in_msg)
 				break;
 			cout << endl << "\In:    " << inBuffer << endl;
-			//printf("%s \n", buffer);
+
+			HandleMessage(inBuffer);
 		}
 	}
 }
@@ -259,6 +268,12 @@ void Network::Static_RecvLoop(void* param) {
 
 void Network::Static_ConnectLoop(void* param) {
 	static_cast<Network*>(param)->ConnectLoop();
+}
+
+bool Network::HandleMessage(char* msg) {
+//	if (msg == "left")
+//		manager.player.MoveLeft();
+	return 1;
 }
 
 void Network::Close() {

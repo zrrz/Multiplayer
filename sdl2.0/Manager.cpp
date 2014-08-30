@@ -7,6 +7,7 @@
 
 SDL_Window* 	Manager::window = NULL;
 SDL_Renderer*	Manager::renderer = NULL;
+Manager*		Manager::instance = NULL;
 
 Manager::Manager(void)
 {
@@ -15,6 +16,8 @@ Manager::Manager(void)
 
 	background = NULL;
 	keys = 0;
+
+	instance = this;
 }
 
 

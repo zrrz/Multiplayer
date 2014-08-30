@@ -33,6 +33,8 @@ public:
 	static SDL_Window*		window;
 	static SDL_Renderer*	renderer;
 
+	static Manager* instance;
+
 private:
 	bool KeyUpdate();
 	bool KeyDown(SDL_Keycode key);

@@ -23,6 +23,8 @@ using namespace std;
 #define DEFAULT_BUFLEN 512
 #define DEFAULT_PORT "27017"
 
+class Manager;
+
 class Network {
 public:
 	struct sharedMem
@@ -37,11 +39,15 @@ public:
 	void RecvLoop();
 	void ConnectLoop();
 
+	bool HandleMessage(char* msg);
+
 	void Close();
 	
 	SOCKET ConnectSocket = INVALID_SOCKET;
 
 private:
+
+	Manager* manager;
 	
 	void static Static_RecvLoop(void* param); // EWWWW
 	void static Static_ConnectLoop(void* param); // Ew
